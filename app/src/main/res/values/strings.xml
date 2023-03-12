@@ -12,4 +12,10 @@
     <string name="about_button">Close</string>
     <string name="button_throw">Throw</string>
     <string name="button_score">Score</string>
+    <string name="button_reroll">Reroll</string>
+    <string name="you">You</string>
+    <string name="robot">Robot</string>
+    <string name="roll_score">Roll Score</string>
+    <string name="full_score">Full Score</string>
+    <string name="enter_target_score">Enter Target Score</string>
 </resources>
