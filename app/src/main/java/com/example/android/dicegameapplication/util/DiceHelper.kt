@@ -33,6 +33,11 @@ class DiceHelper {
             return currentRollFullScore.toString()
         }
 
-
+        fun getFullScore(context: Context, currentFullScore:String?, currentRollFullScore: String?):String {
+            val currentFullScoreIntValue = currentFullScore!!.toInt()
+            val currentRollFullScoreIntValue = currentRollFullScore!!.toInt()
+            val fullScore = currentFullScoreIntValue + currentRollFullScoreIntValue
+            return fullScore.toString()
+        }
     }
 }
