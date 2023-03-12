@@ -31,10 +31,13 @@ class DiceViewModel(app: Application) : AndroidViewModel(app) {
     fun rollDice() {
         userDiceArray.value = DiceHelper.rollDice()
         userCurrentRollFullScore.value = DiceHelper.getCurrentRollFullScore(context,userDiceArray.value)
-        userFullScore.value = DiceHelper.getFullScore(context,userFullScore.value, userCurrentRollFullScore.value)
-
         robotDiceArray.value = DiceHelper.rollDice()
         robotCurrentRollFullScore.value = DiceHelper.getCurrentRollFullScore(context,robotDiceArray.value)
+
+    }
+
+    fun scoreDiceValue() {
+        userFullScore.value = DiceHelper.getFullScore(context,userFullScore.value, userCurrentRollFullScore.value)
         robotFullScore.value = DiceHelper.getFullScore(context,robotFullScore.value, robotCurrentRollFullScore.value)
     }
 }

@@ -12,6 +12,9 @@ import com.example.android.dicegameapplication.viewModel.DiceViewModel
 class GameActivity : AppCompatActivity() {
 
     private lateinit var viewModel : DiceViewModel
+    private lateinit var btnThrow: Button
+    private lateinit var btnReRoll: Button
+    private lateinit var btnScore: Button
 
     private val imageViewsForUser by lazy {
         arrayOf<ImageView> (
@@ -32,8 +35,6 @@ class GameActivity : AppCompatActivity() {
             findViewById(R.id.compDice5)
         )
     }
-
-    private lateinit var btnThrow: Button
 
     private val textViewUserRollFullScore by lazy {
         findViewById<TextView>(R.id.textViewUserScore)
@@ -59,6 +60,11 @@ class GameActivity : AppCompatActivity() {
         btnThrow = findViewById(R.id.btnThrow)
         btnThrow.setOnClickListener{
             viewModel.rollDice()
+        }
+
+        btnScore = findViewById(R.id.btnScore)
+        btnScore.setOnClickListener{
+            viewModel.scoreDiceValue()
         }
 
         // To subscribe to changes in a ViewModel
