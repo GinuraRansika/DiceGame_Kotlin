@@ -1,6 +1,7 @@
 package com.example.android.dicegameapplication
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -22,6 +23,11 @@ class MainActivity : AppCompatActivity() {
         btnNewGame = findViewById(R.id.btnNewGame)
         btnAbout = findViewById(R.id.btnAbout)
 
+
+        btnNewGame.setOnClickListener{
+            val intent = Intent(this, GameActivity::class.java)
+            startActivity(intent)
+        }
 
         btnAbout.setOnClickListener{
             createPopUpWindow()

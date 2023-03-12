@@ -10,4 +10,6 @@
         Any work from other authors is duly referenced and acknowledged.
     </string>
     <string name="about_button">Close</string>
+    <string name="button_throw">Throw</string>
+    <string name="button_score">Score</string>
 </resources>
