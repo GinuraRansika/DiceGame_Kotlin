@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">Dice Game Application</string>
+    <string name="new_game">New Game</string>
+    <string name="about">About</string>
+    <string name="about_this_app">20210319 - Ginura</string>
+    <string name="about_description">
+        I confirm that I understand what plagiarism is and have read and understood the section
+        on Assessment Offences in the Essential Information for Students.
+        The work that I have submitted is entirely my own.
+        Any work from other authors is duly referenced and acknowledged.
+    </string>
+    <string name="about_button">Close</string>
+    <string name="button_throw">Throw</string>
+    <string name="button_score">Score</string>
+    <string name="button_reroll">Reroll</string>
+    <string name="you">You</string>
+    <string name="robot">Robot</string>
+    <string name="roll_score">Roll Score</string>
+    <string name="full_score">Full Score</string>
+    <string name="enter_target_score">Enter Target Score</string>
 </resources>
