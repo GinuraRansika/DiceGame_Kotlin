@@ -2,11 +2,9 @@ package com.example.android.dicegameapplication.viewModel
 
 import android.app.Application
 import android.util.Log
-import android.widget.ImageView
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.android.dicegameapplication.LOG_TAG
-import com.example.android.dicegameapplication.R
 import com.example.android.dicegameapplication.util.DiceHelper
 
 class DiceViewModel(app: Application) : AndroidViewModel(app) {
@@ -18,12 +16,14 @@ class DiceViewModel(app: Application) : AndroidViewModel(app) {
     val userCurrentRollFullScore = MutableLiveData<String>()
     val robotCurrentRollFullScore = MutableLiveData<String>()
     val remainingReRolls = MutableLiveData<String>()
+    var winningScore = MutableLiveData<String>()
 
     var allowToThrow = MutableLiveData<Boolean>()
     var allowToReRoll = MutableLiveData<Boolean>()
     var allowToScore = MutableLiveData<Boolean>()
+    var allowToChangeWinningScore = MutableLiveData<Boolean>()
 
-    private val maxReRolls = 10
+    private val maxReRolls = 2
     private val context = app
 
     init {
@@ -31,7 +31,9 @@ class DiceViewModel(app: Application) : AndroidViewModel(app) {
         allowToThrow.value = true
         allowToReRoll.value = false
         allowToScore.value = false
+        allowToChangeWinningScore.value = true
         remainingReRolls.value = maxReRolls.toString()
+        winningScore.value = 101.toString()
         userFullScore.value = "0"
         robotFullScore.value = "0"
         userCurrentRollFullScore.value = "0"
@@ -40,36 +42,47 @@ class DiceViewModel(app: Application) : AndroidViewModel(app) {
         robotDiceArray.value = intArrayOf(6, 6, 6, 6, 6)
     }
 
+    fun setGameWinningScore(userEnteredScore: String){
+        if(allowToChangeWinningScore.value == true)
+            winningScore.value = userEnteredScore
+    }
+
     fun rollDice() {
+        allowToChangeWinningScore.value = false
         allowToThrow.value = false
         allowToReRoll.value = true
         allowToScore.value = true
+        remainingReRolls.value = maxReRolls.toString()
+
         userDiceArray.value = DiceHelper.rollDice()
         userCurrentRollFullScore.value = DiceHelper.getCurrentRollFullScore(context,userDiceArray.value)
         robotDiceArray.value = DiceHelper.rollDice()
         robotCurrentRollFullScore.value = DiceHelper.getCurrentRollFullScore(context,robotDiceArray.value)
-
     }
 
     fun scoreDiceValue() {
         allowToThrow.value = true
         allowToScore.value = false
         allowToReRoll.value = false
+
         userFullScore.value = DiceHelper.getFullScore(context,userFullScore.value, userCurrentRollFullScore.value)
         robotFullScore.value = DiceHelper.getFullScore(context,robotFullScore.value, robotCurrentRollFullScore.value)
     }
 
     fun reRollDice(reRollDiceArray: IntArray) {
-        if(remainingReRolls.value!!.toInt() > 0) {
+        if(remainingReRolls.value!!.toInt() > 1) {
             if(reRollDiceArray.isNotEmpty()){
                 allowToScore.value =  true
+
                 remainingReRolls.value = (remainingReRolls.value!!.toInt() - 1).toString()
                 userDiceArray.value = userDiceArray.value?.let { DiceHelper.getReRolledArray(it,reRollDiceArray) }
                 userCurrentRollFullScore.value = DiceHelper.getCurrentRollFullScore(context,userDiceArray.value)
             }
-
+        }else if(remainingReRolls.value!!.toInt() == 1) {
+            remainingReRolls.value = (remainingReRolls.value!!.toInt() - 1).toString()
+            userDiceArray.value = userDiceArray.value?.let { DiceHelper.getReRolledArray(it,reRollDiceArray) }
+            userCurrentRollFullScore.value = DiceHelper.getCurrentRollFullScore(context,userDiceArray.value)
+            scoreDiceValue()
         }
-
-
     }
 }

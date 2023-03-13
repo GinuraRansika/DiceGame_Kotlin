@@ -2,18 +2,22 @@ package com.example.android.dicegameapplication
 
 import android.os.Bundle
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.android.dicegameapplication.viewModel.DiceViewModel
+import com.google.android.material.textfield.TextInputEditText
 
 class GameActivity : AppCompatActivity() {
     private lateinit var viewModel : DiceViewModel
     private lateinit var btnThrow: Button
     private lateinit var btnReRoll: Button
     private lateinit var btnScore: Button
+    private lateinit var btnSetGameWinningScore: Button
     private var reRollDiceArray = mutableListOf<Int>()
     private val imageViewsForUser by lazy {
         arrayOf<ImageView> (
@@ -31,6 +35,7 @@ class GameActivity : AppCompatActivity() {
             findViewById(R.id.compDice4),
             findViewById(R.id.compDice5))
     }
+    private val textInputGameWinningScore by lazy { findViewById<EditText>(R.id.textInputGameWinningScore) }
     private val textViewUserRollFullScore by lazy { findViewById<TextView>(R.id.textViewUserScore) }
     private val textViewRobotRollFullScore by lazy { findViewById<TextView>(R.id.textViewRobotScore) }
     private val textViewUserFullScore by lazy { findViewById<TextView>(R.id.textViewUserFullScore) }
@@ -46,10 +51,26 @@ class GameActivity : AppCompatActivity() {
         btnThrow = findViewById(R.id.btnThrow)
         btnThrow.setOnClickListener{
             // avoid re throwing dice if the user hasn't scored previous scores
-            if(viewModel.allowToThrow.value!!){ viewModel.rollDice() }
+            if(viewModel.allowToThrow.value!!){
+                viewModel.rollDice()
+                if(viewModel.allowToChangeWinningScore.value!!.not()){
+                    textInputGameWinningScore.isEnabled = false
+                }
+            }
         }
 
+        btnSetGameWinningScore = findViewById(R.id.btnSetGameWinningScore)
+        btnSetGameWinningScore.setOnClickListener{
+            if(viewModel.allowToChangeWinningScore.value!!){
+                Toast.makeText(this, "Changed ${viewModel.winningScore.value}",Toast.LENGTH_LONG).show()
+                viewModel.setGameWinningScore(textInputGameWinningScore.text.toString())
+                textInputGameWinningScore.clearFocus()
+
+            }
+        }
         getUserSelectedDiceToReRoll()
+
+
 
         btnScore = findViewById(R.id.btnScore)
         btnScore.setOnClickListener{

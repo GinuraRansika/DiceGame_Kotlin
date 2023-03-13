@@ -18,4 +18,5 @@
     <string name="roll_score">Roll Score</string>
     <string name="full_score">Full Score</string>
     <string name="enter_target_score">Enter Target Score</string>
+    <string name="set">set</string>
 </resources>

@@ -27,8 +27,8 @@ class DiceHelper {
 
         fun getReRolledArray( diceArray: IntArray, reRollDiceArray:IntArray?): IntArray {
             for (i in reRollDiceArray!!.indices) {
-                val element = reRollDiceArray[i]
-                diceArray.set(element-1,getDie())
+                val index = reRollDiceArray[i] - 1
+                diceArray[index] = getDie()
             }
             return diceArray
         }
