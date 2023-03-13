@@ -9,9 +9,10 @@ class DiceHelper {
 
 
         // Get a random number between 1 and 6
-        private fun getDie(): Int {
+        fun getDie(): Int {
             return Random.nextInt(1, 7)
         }
+
 
         // Roll the dice, return 5 random integers in an array
         fun rollDice(): IntArray {
@@ -22,6 +23,14 @@ class DiceHelper {
                 getDie(),
                 getDie()
             )
+        }
+
+        fun getReRolledArray( diceArray: IntArray, reRollDiceArray:IntArray?): IntArray {
+            for (i in reRollDiceArray!!.indices) {
+                val element = reRollDiceArray[i]
+                diceArray.set(element-1,getDie())
+            }
+            return diceArray
         }
 
         fun getCurrentRollFullScore(context: Context, diceArray: IntArray?): String{
