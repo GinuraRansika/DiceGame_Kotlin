@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.android.dicegameapplication.viewModel.DiceViewModel
-import com.google.android.material.textfield.TextInputEditText
 
 class GameActivity : AppCompatActivity() {
     private lateinit var viewModel : DiceViewModel
@@ -36,6 +35,7 @@ class GameActivity : AppCompatActivity() {
             findViewById(R.id.compDice5))
     }
     private val textInputGameWinningScore by lazy { findViewById<EditText>(R.id.textInputGameWinningScore) }
+    private val textViewFinalWinningScore by lazy { findViewById<TextView>(R.id.textViewFinalWinningScore) }
     private val textViewUserRollFullScore by lazy { findViewById<TextView>(R.id.textViewUserScore) }
     private val textViewRobotRollFullScore by lazy { findViewById<TextView>(R.id.textViewRobotScore) }
     private val textViewUserFullScore by lazy { findViewById<TextView>(R.id.textViewUserFullScore) }
@@ -44,6 +44,7 @@ class GameActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
+
 
         // initialize the view model
         viewModel = ViewModelProvider(this).get(DiceViewModel::class.java)
@@ -59,17 +60,17 @@ class GameActivity : AppCompatActivity() {
             }
         }
 
+        if(viewModel.allowToChangeWinningScore.value!!.not()){
+            textInputGameWinningScore.isEnabled = false
+        }
         btnSetGameWinningScore = findViewById(R.id.btnSetGameWinningScore)
         btnSetGameWinningScore.setOnClickListener{
             if(viewModel.allowToChangeWinningScore.value!!){
-                Toast.makeText(this, "Changed ${viewModel.winningScore.value}",Toast.LENGTH_LONG).show()
                 viewModel.setGameWinningScore(textInputGameWinningScore.text.toString())
                 textInputGameWinningScore.clearFocus()
-
             }
         }
         getUserSelectedDiceToReRoll()
-
 
 
         btnScore = findViewById(R.id.btnScore)
@@ -91,6 +92,8 @@ class GameActivity : AppCompatActivity() {
         viewModel.userFullScore.observe(this, Observer { textViewUserFullScore.text = it })
         viewModel.robotFullScore.observe(this, Observer { textViewRobotFullScore.text = it })
         viewModel.remainingReRolls.observe(this, Observer { btnReRoll.text = "REROLL($it)" })
+        viewModel.gameWinningScore.observe(this, Observer { textInputGameWinningScore.setText(it.toString()) })
+        viewModel.finalWinningScore.observe(this, Observer { textViewFinalWinningScore.text = it })
     }
 
 

@@ -11,43 +11,43 @@
         android:id="@+id/textViewUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:text="@string/you"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.24"
+        app:layout_constraintHorizontal_bias="0.222"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
     <TextView
         android:id="@+id/textViewRobot"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text="@string/robot"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.593"
+        app:layout_constraintHorizontal_bias="0.594"
         app:layout_constraintStart_toEndOf="@+id/textViewUser"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
     <LinearLayout
         android:id="@+id/linearLayout5"
-        android:layout_width="360dp"
+        android:layout_width="350dp"
         android:layout_height="37dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintHorizontal_bias="0.484"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewUser">
 
         <TextView
             android:id="@+id/textViewYourFullScoreLabel"
-            android:layout_width="80dp"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:text="@string/full_score" />
 
@@ -55,8 +55,8 @@
             android:id="@+id/textViewUserFullScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="60dp"
-            android:text="000" />
+            android:layout_marginEnd="80dp"
+            android:text="" />
 
         <TextView
             android:id="@+id/textViewRobotFullScoreLabel"
@@ -68,7 +68,7 @@
             android:id="@+id/textViewRobotFullScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="000" />
+            android:text="" />
 
     </LinearLayout>
 
@@ -76,11 +76,11 @@
         android:id="@+id/linearLayout2"
         android:layout_width="360dp"
         android:layout_height="37dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="4dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayoutForDice">
 
@@ -111,25 +111,22 @@
 
     </LinearLayout>
 
-
-
-
     <LinearLayout
         android:id="@+id/linearLayout4"
         android:layout_width="270dp"
         android:layout_height="55dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="8dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="170dp"
-            android:layout_marginEnd="30dp"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginEnd="30dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textInputGameWinningScore"
@@ -188,31 +185,36 @@
         android:layout_width="370dp"
         android:layout_height="250dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="8dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
+
         <LinearLayout
             android:layout_width="165dp"
             android:layout_height="match_parent"
             android:layout_marginEnd="20dp"
             android:gravity="center"
             android:orientation="horizontal">
+
             <LinearLayout
                 android:layout_width="82dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+
                 <ImageView
                     android:id="@+id/userDice1"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dice_height"
                     android:layout_marginBottom="5dp"
                     android:paddingTop="3dp"
-                    android:src="@drawable/die_face_6" />
+                    android:src="@drawable/die_face_6"
+                    android:contentDescription="user Dice 1" />
+
                 <ImageView
                     android:id="@+id/userDice2"
                     android:layout_width="match_parent"
@@ -220,6 +222,7 @@
                     android:layout_marginBottom="5dp"
                     android:paddingTop="3dp"
                     android:src="@drawable/die_face_6" />
+
                 <ImageView
                     android:id="@+id/userDice3"
                     android:layout_width="match_parent"
@@ -233,6 +236,7 @@
                 android:layout_width="82dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+
                 <ImageView
                     android:id="@+id/userDice4"
                     android:layout_width="match_parent"
@@ -240,6 +244,7 @@
                     android:layout_marginBottom="5dp"
                     android:paddingTop="3dp"
                     android:src="@drawable/die_face_6" />
+
                 <ImageView
                     android:id="@+id/userDice5"
 
@@ -256,10 +261,12 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="horizontal">
+
             <LinearLayout
                 android:layout_width="82dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+
                 <ImageView
                     android:id="@+id/compDice1"
                     android:layout_width="match_parent"
@@ -267,6 +274,7 @@
                     android:layout_marginBottom="5dp"
                     android:paddingTop="3dp"
                     android:src="@drawable/die_face_6" />
+
                 <ImageView
                     android:id="@+id/compDice2"
                     android:layout_width="match_parent"
@@ -274,6 +282,7 @@
                     android:layout_marginBottom="5dp"
                     android:paddingTop="3dp"
                     android:src="@drawable/die_face_6" />
+
                 <ImageView
                     android:id="@+id/compDice3"
                     android:layout_width="match_parent"
@@ -287,6 +296,7 @@
                 android:layout_width="82dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+
                 <ImageView
                     android:id="@+id/compDice4"
                     android:layout_width="match_parent"
@@ -294,6 +304,7 @@
                     android:layout_marginBottom="5dp"
                     android:paddingTop="3dp"
                     android:src="@drawable/die_face_6" />
+
                 <ImageView
                     android:id="@+id/compDice5"
                     android:layout_width="match_parent"
@@ -303,6 +314,31 @@
                     android:src="@drawable/die_face_6" />
             </LinearLayout>
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="182dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textViewFinalWinningScoreLabel"
+            android:layout_width="95dp"
+            android:layout_height="wrap_content"
+            android:text="@string/winning_score" />
+
+        <TextView
+            android:id="@+id/textViewFinalWinningScore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

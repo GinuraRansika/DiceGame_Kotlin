@@ -16,15 +16,17 @@ class DiceViewModel(app: Application) : AndroidViewModel(app) {
     val userCurrentRollFullScore = MutableLiveData<String>()
     val robotCurrentRollFullScore = MutableLiveData<String>()
     val remainingReRolls = MutableLiveData<String>()
-    var winningScore = MutableLiveData<String>()
+    var gameWinningScore = MutableLiveData<String>()
 
     var allowToThrow = MutableLiveData<Boolean>()
     var allowToReRoll = MutableLiveData<Boolean>()
     var allowToScore = MutableLiveData<Boolean>()
     var allowToChangeWinningScore = MutableLiveData<Boolean>()
+    var finalWinningScore = MutableLiveData<String>()
 
     private val maxReRolls = 2
     private val context = app
+    private val defaultWinningScore = 101
 
     init {
         Log.i(LOG_TAG, "VIEW MODEL CREATED")
@@ -33,7 +35,7 @@ class DiceViewModel(app: Application) : AndroidViewModel(app) {
         allowToScore.value = false
         allowToChangeWinningScore.value = true
         remainingReRolls.value = maxReRolls.toString()
-        winningScore.value = 101.toString()
+        finalWinningScore.value = defaultWinningScore.toString()
         userFullScore.value = "0"
         robotFullScore.value = "0"
         userCurrentRollFullScore.value = "0"
@@ -43,8 +45,10 @@ class DiceViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun setGameWinningScore(userEnteredScore: String){
-        if(allowToChangeWinningScore.value == true)
-            winningScore.value = userEnteredScore
+        if(allowToChangeWinningScore.value == true){
+            gameWinningScore.value = userEnteredScore
+            finalWinningScore.value = gameWinningScore.value
+        }
     }
 
     fun rollDice() {
