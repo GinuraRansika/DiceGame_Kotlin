@@ -1,11 +1,12 @@
 package com.example.android.dicegameapplication
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -17,6 +18,7 @@ class GameActivity : AppCompatActivity() {
     private lateinit var btnReRoll: Button
     private lateinit var btnScore: Button
     private lateinit var btnSetGameWinningScore: Button
+    private lateinit var linearLayoutEnterTargetScore: LinearLayout
     private var reRollDiceArray = mutableListOf<Int>()
     private val imageViewsForUser by lazy {
         arrayOf<ImageView> (
@@ -45,6 +47,7 @@ class GameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
 
+        linearLayoutEnterTargetScore = findViewById(R.id.linearLayoutEnterTargetScore)
 
         // initialize the view model
         viewModel = ViewModelProvider(this).get(DiceViewModel::class.java)
@@ -52,16 +55,18 @@ class GameActivity : AppCompatActivity() {
         btnThrow = findViewById(R.id.btnThrow)
         btnThrow.setOnClickListener{
             // avoid re throwing dice if the user hasn't scored previous scores
-            if(viewModel.allowToThrow.value!!){
+            if(viewModel.userAllowToThrow.value!!){
                 viewModel.rollDice()
                 if(viewModel.allowToChangeWinningScore.value!!.not()){
                     textInputGameWinningScore.isEnabled = false
+                    linearLayoutEnterTargetScore.visibility = View.GONE
                 }
             }
         }
 
         if(viewModel.allowToChangeWinningScore.value!!.not()){
             textInputGameWinningScore.isEnabled = false
+            linearLayoutEnterTargetScore.visibility = View.GONE
         }
         btnSetGameWinningScore = findViewById(R.id.btnSetGameWinningScore)
         btnSetGameWinningScore.setOnClickListener{
@@ -75,12 +80,12 @@ class GameActivity : AppCompatActivity() {
 
         btnScore = findViewById(R.id.btnScore)
         btnScore.setOnClickListener{
-            if(viewModel.allowToScore.value!!){ viewModel.scoreDiceValue() }
+            if(viewModel.userAllowToScore.value!!){ viewModel.scoreDiceValue() }
         }
 
         btnReRoll = findViewById(R.id.btnReRoll)
         btnReRoll.setOnClickListener{
-            if(viewModel.allowToReRoll.value!!){ viewModel.reRollDice(reRollDiceArray.toIntArray()) }
+            if(viewModel.userAllowToReRoll.value!!){ viewModel.reRollDice(reRollDiceArray.toIntArray()) }
         }
 
         // To subscribe to changes in a ViewModel
@@ -91,7 +96,7 @@ class GameActivity : AppCompatActivity() {
         viewModel.robotCurrentRollFullScore.observe(this, Observer { textViewRobotRollFullScore.text = it })
         viewModel.userFullScore.observe(this, Observer { textViewUserFullScore.text = it })
         viewModel.robotFullScore.observe(this, Observer { textViewRobotFullScore.text = it })
-        viewModel.remainingReRolls.observe(this, Observer { btnReRoll.text = "REROLL($it)" })
+        viewModel.userRemainingReRolls.observe(this, Observer { btnReRoll.text = "REROLL($it)" })
         viewModel.gameWinningScore.observe(this, Observer { textInputGameWinningScore.setText(it.toString()) })
         viewModel.finalWinningScore.observe(this, Observer { textViewFinalWinningScore.text = it })
     }

@@ -48,5 +48,28 @@ class DiceHelper {
             val fullScore = currentFullScoreIntValue + currentRollFullScoreIntValue
             return fullScore.toString()
         }
+
+        fun getRobotReRollingDices():IntArray {
+            val robotReRollDices = mutableListOf<Int>()
+            for (i in 1..getRobotDiceToReRoll()){
+                while(true){
+                    val diceNo = getRobotDiceToReRoll()
+                    if(!robotReRollDices.contains(diceNo)){
+                        robotReRollDices.add(diceNo)
+                        break
+                    }
+                    else{ continue }
+                }
+            }
+            return robotReRollDices.toIntArray()
+        }
+
+        fun getRobotReRollDecision():Boolean{
+            return Random.nextBoolean()
+        }
+
+        private fun getRobotDiceToReRoll():Int{
+            return Random.nextInt(1,6)
+        }
     }
 }
