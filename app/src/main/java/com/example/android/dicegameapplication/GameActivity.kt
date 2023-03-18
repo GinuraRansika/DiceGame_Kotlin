@@ -45,30 +45,22 @@ class GameActivity : AppCompatActivity() {
     private val textViewRobotRollFullScore by lazy { findViewById<TextView>(R.id.textViewRobotScore) }
     private val textViewUserFullScore by lazy { findViewById<TextView>(R.id.textViewUserFullScore) }
     private val textViewRobotFullScore by lazy { findViewById<TextView>(R.id.textViewRobotFullScore)}
+    private val textViewUserGameWins by lazy { findViewById<TextView>(R.id.textViewUserGameWins)}
+    private val textViewRobotGameWins by lazy { findViewById<TextView>(R.id.textViewRobotGameWins)}
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
+        val userWins = intent.extras!!.getInt("userWins")
+        val robotWins = intent.extras!!.getInt("robotWins")
+
 
         linearLayoutEnterTargetScore = findViewById(R.id.linearLayoutEnterTargetScore)
-
         // initialize the view model
         viewModel = ViewModelProvider(this).get(DiceViewModel::class.java)
-        // To subscribe to changes in a ViewModel
-        // "it" is the new value when it's published from the viewModel
-        viewModel.robotDiceArray.observe(this, Observer { updateDisplay(it,imageViewsForRobot) })
-        viewModel.userDiceArray.observe(this, Observer { updateDisplay(it,imageViewsForUser) })
-        viewModel.userCurrentRollFullScore.observe(this, Observer { textViewUserRollFullScore.text = it })
-        viewModel.robotCurrentRollFullScore.observe(this, Observer { textViewRobotRollFullScore.text = it })
-        viewModel.userFullScore.observe(this, Observer { textViewUserFullScore.text = it })
-        viewModel.robotFullScore.observe(this, Observer { textViewRobotFullScore.text = it })
-        viewModel.gameWinningScore.observe(this, Observer { textInputGameWinningScore.setText(it.toString()) })
-        viewModel.finalWinningScore.observe(this, Observer { textViewFinalWinningScore.text = it })
-        viewModel.userRemainingReRolls.observe(this, Observer { userRemainingRolls = it })
-        viewModel.btnThrowText.observe(this, Observer { btnThrow.text = it })
-        viewModel.reRollDiceArray.observe(this, Observer { reRollDiceArray = it })
-
+        viewModel.setValue(userWins, robotWins)
 
         val userDice1 = findViewById<ImageView>(R.id.userDice1)
         userDice1.setOnClickListener{
@@ -136,9 +128,29 @@ class GameActivity : AppCompatActivity() {
                 btnThrowText = getString(R.string.button_throw)
             }
             if(viewModel.hasWin.value!!){
-                winnerPopUpWindow(viewModel.winner.value)
+                if(viewModel.winner.value.equals("user")){
+                    winnerPopUpWindow("You win!")
+                }else{
+                    winnerPopUpWindow("You lose")
+                }
             }
         }
+
+        // To subscribe to changes in a ViewModel
+        // "it" is the new value when it's published from the viewModel
+        viewModel.robotDiceArray.observe(this, Observer { updateDisplay(it,imageViewsForRobot) })
+        viewModel.userDiceArray.observe(this, Observer { updateDisplay(it,imageViewsForUser) })
+        viewModel.userCurrentRollFullScore.observe(this, Observer { textViewUserRollFullScore.text = it })
+        viewModel.robotCurrentRollFullScore.observe(this, Observer { textViewRobotRollFullScore.text = it })
+        viewModel.userFullScore.observe(this, Observer { textViewUserFullScore.text = it })
+        viewModel.robotFullScore.observe(this, Observer { textViewRobotFullScore.text = it })
+        viewModel.gameWinningScore.observe(this, Observer { textInputGameWinningScore.setText(it.toString()) })
+        viewModel.finalWinningScore.observe(this, Observer { textViewFinalWinningScore.text = it })
+        viewModel.userRemainingReRolls.observe(this, Observer { userRemainingRolls = it })
+        viewModel.btnThrowText.observe(this, Observer { btnThrow.text = it })
+        viewModel.reRollDiceArray.observe(this, Observer { reRollDiceArray = it })
+        viewModel.userWinnings.observe(this, Observer { textViewUserGameWins.text = it.toString() })
+        viewModel.robotWinnings.observe(this, Observer { textViewRobotGameWins.text = it.toString() })
     }
 
 
@@ -152,18 +164,27 @@ class GameActivity : AppCompatActivity() {
     private fun winnerPopUpWindow(winnerName: String?) {
         val inflater : LayoutInflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val popupView : View = inflater.inflate(R.layout.winner_popup_layout, null)
+
         val width = ViewGroup.LayoutParams.WRAP_CONTENT
         val height = ViewGroup.LayoutParams.WRAP_CONTENT
         val focusable = true
+
         val popupWindow = PopupWindow(popupView, width, height,focusable)
-        popupWindow.setOnDismissListener {
-            intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
+
+
         popupWindow.isOutsideTouchable = false
-        popupWindow.showAtLocation(findViewById<View?>(android.R.id.content).rootView, Gravity.BOTTOM, 0, 0)
+        popupWindow.isFocusable = true
+        popupWindow.showAtLocation(findViewById<View?>(android.R.id.content).rootView, Gravity.CENTER, 0, 0)
         val winner = popupView.findViewById<TextView>(R.id.textViewWinner)
         winner.text = winnerName
+
+        popupWindow.setOnDismissListener {
+            intent = Intent(this, MainActivity::class.java)
+            intent.action = Intent.ACTION_VIEW
+            intent.putExtra("userWins", viewModel.userWinnings.value)
+            intent.putExtra("robotWins", viewModel.robotWinnings.value)
+            startActivity(intent)
+        }
     }
 
 

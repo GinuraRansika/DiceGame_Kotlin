@@ -11,6 +11,9 @@ import com.example.android.dicegameapplication.R
 import com.example.android.dicegameapplication.util.DiceHelper
 
 class DiceViewModel(app: Application) : AndroidViewModel(app) {
+    val userWinnings = MutableLiveData<Int>()
+    val robotWinnings = MutableLiveData<Int>()
+
     // add parentheses in the end so that you are calling the constructor
     val userDiceArray = MutableLiveData<IntArray>()
     val userFullScore = MutableLiveData<String>()
@@ -49,7 +52,7 @@ class DiceViewModel(app: Application) : AndroidViewModel(app) {
         userAllowToSelectDices.value = false
         allowToChangeWinningScore.value = true
         hasWin.value = false
-        rolledTimes.value = 0
+        robotWinnings.value  = 0
 
         userRemainingReRolls.value = maxReRolls
         robotRemainingReRolls.value = maxReRolls
@@ -72,6 +75,11 @@ class DiceViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
+    fun setValue(userWins:Int, robotWins:Int){
+        userWinnings.value = userWins
+        robotWinnings.value = robotWins
+    }
+
     fun rollDice() {
         rolledTimes.value = rolledTimes.value?.plus(1)
         allowToChangeWinningScore.value = false
@@ -88,10 +96,16 @@ class DiceViewModel(app: Application) : AndroidViewModel(app) {
         robotCurrentRollFullScore.value = DiceHelper.getCurrentRollFullScore(context,robotDiceArray.value)
     }
 
-    fun getTheWinner():Boolean{
+    private fun getTheWinner():Boolean{
         if (DiceHelper.hasWin(userFullScore.value?.toInt() , robotFullScore.value?.toInt(), finalWinningScore.value?.toInt())){
             Toast.makeText(context,"Win",Toast.LENGTH_LONG).show()
             winner.value = DiceHelper.getTheWinner(userFullScore.value!!.toInt() , robotFullScore.value!!.toInt(), finalWinningScore.value!!.toInt())
+
+            if(winner.value.equals("user")){
+                userWinnings.value = userWinnings.value?.plus(1)
+            }else if(winner.value.equals("robot")){
+                robotWinnings.value = robotWinnings.value?.plus(1)
+            }
             return true
         }else{
             return false

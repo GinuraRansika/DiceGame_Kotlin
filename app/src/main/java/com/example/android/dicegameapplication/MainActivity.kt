@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.PopupWindow
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
@@ -20,17 +21,25 @@ class MainActivity : AppCompatActivity() {
         // buttons
         btnNewGame = findViewById(R.id.btnNewGame)
         btnAbout = findViewById(R.id.btnAbout)
+        var userWins = 0
+        var robotWins = 0
 
+        if(intent != null && intent.action == Intent.ACTION_VIEW) {
+            Toast.makeText(this, "Hai", Toast.LENGTH_LONG).show()
+            userWins = intent.extras!!.getInt("userWins")
+            robotWins = intent.extras!!.getInt("robotWins")
+        }
 
-        btnNewGame.setOnClickListener{
+        btnNewGame.setOnClickListener {
             val intent = Intent(this, GameActivity::class.java)
+            intent.putExtra("userWins", userWins)
+            intent.putExtra("robotWins", robotWins)
             startActivity(intent)
         }
 
-        btnAbout.setOnClickListener{
+        btnAbout.setOnClickListener {
             createPopUpWindow()
         }
-
     }
 
     private fun createPopUpWindow() {
