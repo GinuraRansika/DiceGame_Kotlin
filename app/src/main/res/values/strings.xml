@@ -21,4 +21,5 @@
     <string name="set">set</string>
     <string name="full_score_label">Full Score Label</string>
     <string name="winning_score">Winning Score</string>
+    <string name="total_wins">Total Wins</string>
 </resources>

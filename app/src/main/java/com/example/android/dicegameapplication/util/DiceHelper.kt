@@ -49,6 +49,30 @@ class DiceHelper {
             return fullScore.toString()
         }
 
+        fun getTheWinner(userFullScore:Int, robotFullScore:Int, winningScore:Int):String{
+            return if(userFullScore >= winningScore && robotFullScore >= winningScore){
+                if(userFullScore > robotFullScore){
+                    "user"
+                } else if (userFullScore == robotFullScore){
+                    "equal"
+                } else {
+                    "robot"
+                }
+            } else if(userFullScore >= winningScore) {
+                "user"
+            } else if(robotFullScore >= winningScore) {
+                "robot"
+            } else {
+                ""
+            }
+        }
+
+        fun hasWin(userFullScore:Int?, robotFullScore:Int?, winningScore:Int?):Boolean{
+            val result = getTheWinner(userFullScore!!, robotFullScore!!, winningScore!!)
+            return result != ""
+        }
+
+
         fun getRobotReRollingDices():IntArray {
             val robotReRollDices = mutableListOf<Int>()
             for (i in 1..getRobotDiceToReRoll()){
@@ -65,7 +89,7 @@ class DiceHelper {
         }
 
         fun getRobotReRollDecision():Boolean{
-            return Random.nextBoolean()
+            return true
         }
 
         private fun getRobotDiceToReRoll():Int{
