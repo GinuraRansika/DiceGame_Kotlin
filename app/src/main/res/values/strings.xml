@@ -14,7 +14,7 @@
     <string name="button_score">Score</string>
     <string name="button_reroll">Reroll</string>
     <string name="you">You</string>
-    <string name="robot">Robot</string>
+    <string name="robot">Computer</string>
     <string name="roll_score">Roll Score</string>
     <string name="full_score">Full Score</string>
     <string name="enter_target_score">Enter Target Score</string>
@@ -22,4 +22,26 @@
     <string name="full_score_label">Full Score Label</string>
     <string name="winning_score">Winning Score</string>
     <string name="total_wins">Total Wins</string>
+    <string name="hard_mode">Hard Mode</string>
+    <string name="easy_mode">Easy Mode</string>
+    <string name="game_settings">Game Settings</string>
+    <string name="start">Start</string>
+    <string name="background_image_for_the_loading_page">Background Image For the Loading Page</string>
+    <string name="background_image_for_the_game_page">Background Image for the Game Page</string>
+    <string name="choose_easy_game_mode_option">Choose Easy Game Mode Option</string>
+    <string name="choose_hard_game_mode_option">Choose Hard Game Mode Option</string>
+    <string name="human_wins_label">H :</string>
+    <string name="computer_wins_label">/ C :</string>
+    <string name="user_dice_1">user dice 1</string>
+    <string name="user_dice_2">user dice 2</string>
+    <string name="user_dice_3">user dice 3</string>
+    <string name="user_dice_4">user dice 4</string>
+    <string name="user_dice_5">user dice 5</string>
+    <string name="computer_dice_1">computer dice 1</string>
+    <string name="computer_dice_2">computer dice 2</string>
+    <string name="computer_dice_3">computer dice 3</string>
+    <string name="computer_dice_4">computer dice 4</string>
+    <string name="computer_dice_5">computer dice 5</string>
+    <string name="winner_image">winner image</string>
+    <string name="splash_screen_image">Splash Screen Image</string>
 </resources>

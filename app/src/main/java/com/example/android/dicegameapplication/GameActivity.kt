@@ -1,28 +1,34 @@
 package com.example.android.dicegameapplication
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.activity.OnBackPressedCallback
-import androidx.activity.setViewTreeOnBackPressedDispatcherOwner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.android.dicegameapplication.util.DiceHelper
 import com.example.android.dicegameapplication.viewModel.DiceViewModel
 
 class GameActivity : AppCompatActivity() {
+    private var reRollDiceArray =  mutableListOf(1,2,3,4,5) // as the default all the dices should keep
+    private var userRemainingReRolls: Int = 0
+    private lateinit var gameDifficulty: String
+    private var popupWindow: PopupWindow? = null
     private lateinit var viewModel : DiceViewModel
     private lateinit var btnThrow: Button
     private lateinit var btnScore: Button
-    private lateinit var btnSetGameWinningScore: Button
-    private lateinit var btnThrowText: String
-    private lateinit var linearLayoutEnterTargetScore: LinearLayout
-    private var reRollDiceArray = mutableListOf<Int>()
-    private var userRemainingRolls: Int = 0
+    private val textViewFinalWinningScore by lazy { findViewById<TextView>(R.id.textViewFinalWinningScore) }
+    private val textViewUserRollFullScore by lazy { findViewById<TextView>(R.id.textViewUserScore) }
+    private val textViewRobotRollFullScore by lazy { findViewById<TextView>(R.id.textViewRobotScore) }
+    private val textViewUserFullScore by lazy { findViewById<TextView>(R.id.textViewUserFullScore) }
+    private val textViewRobotFullScore by lazy { findViewById<TextView>(R.id.textViewRobotFullScore)}
+    private val textViewUserGameWins by lazy { findViewById<TextView>(R.id.textViewUserGameWins)}
+    private val textViewRobotGameWins by lazy { findViewById<TextView>(R.id.textViewRobotGameWins)}
     private val imageViewsForUser by lazy {
         arrayOf<ImageView> (
             findViewById(R.id.userDice1),
@@ -39,163 +45,144 @@ class GameActivity : AppCompatActivity() {
             findViewById(R.id.compDice4),
             findViewById(R.id.compDice5))
     }
-    private val textInputGameWinningScore by lazy { findViewById<EditText>(R.id.textInputGameWinningScore) }
-    private val textViewFinalWinningScore by lazy { findViewById<TextView>(R.id.textViewFinalWinningScore) }
-    private val textViewUserRollFullScore by lazy { findViewById<TextView>(R.id.textViewUserScore) }
-    private val textViewRobotRollFullScore by lazy { findViewById<TextView>(R.id.textViewRobotScore) }
-    private val textViewUserFullScore by lazy { findViewById<TextView>(R.id.textViewUserFullScore) }
-    private val textViewRobotFullScore by lazy { findViewById<TextView>(R.id.textViewRobotFullScore)}
-    private val textViewUserGameWins by lazy { findViewById<TextView>(R.id.textViewUserGameWins)}
-    private val textViewRobotGameWins by lazy { findViewById<TextView>(R.id.textViewRobotGameWins)}
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
-        val userWins = intent.extras!!.getInt("userWins")
-        val robotWins = intent.extras!!.getInt("robotWins")
 
-
-        linearLayoutEnterTargetScore = findViewById(R.id.linearLayoutEnterTargetScore)
         // initialize the view model
         viewModel = ViewModelProvider(this).get(DiceViewModel::class.java)
+
+        // get the values from the intents
+        val userWins = intent.extras!!.getInt("userWins")
+        val robotWins = intent.extras!!.getInt("robotWins")
+        gameDifficulty = intent.extras!!.getString("gameDifficulty").toString()
+        val finalWinningScore = intent.extras!!.getInt("finalWinningScore")
+
+        // change the background image based on the game mode
+        val imageViewGamePageBackground = findViewById<ImageView>(R.id.imageViewGamePageBackground)
+        imageViewGamePageBackground.scaleType = ImageView.ScaleType.CENTER_CROP
+        imageViewGamePageBackground.setImageResource(
+            if (gameDifficulty.contains("easy")) R.drawable.easy_game_background else R.drawable.hard_game_background
+        )
+
+        // set the values in the viewModel
+        viewModel.setGameDifficulty(gameDifficulty)
+        viewModel.setGameWinningScore(finalWinningScore.toString())
         viewModel.setValue(userWins, robotWins)
 
-        val userDice1 = findViewById<ImageView>(R.id.userDice1)
-        userDice1.setOnClickListener{
-            if(viewModel.userAllowToSelectDices.value!!){
-                viewModel.updateReRollDiceArray(userDice1, 1, reRollDiceArray)
-            }
-        }
-
-        val userDice2 = findViewById<ImageView>(R.id.userDice2)
-        userDice2.setOnClickListener{
-            if(viewModel.userAllowToSelectDices.value!!){
-                viewModel.updateReRollDiceArray(userDice2, 2, reRollDiceArray)
-            }
-        }
-
-        val userDice3 = findViewById<ImageView>(R.id.userDice3)
-        userDice3.setOnClickListener{
-            if(viewModel.userAllowToSelectDices.value!!){
-                viewModel.updateReRollDiceArray(userDice3, 3, reRollDiceArray)
-            }
-        }
-
-        val userDice4 = findViewById<ImageView>(R.id.userDice4)
-        userDice4.setOnClickListener{
-            if(viewModel.userAllowToSelectDices.value!!){
-                viewModel.updateReRollDiceArray(userDice4, 4, reRollDiceArray)
-            }
-        }
-
-        val userDice5 = findViewById<ImageView>(R.id.userDice5)
-        userDice5.setOnClickListener{
-            if(viewModel.userAllowToSelectDices.value!!){
-                viewModel.updateReRollDiceArray(userDice5, 5, reRollDiceArray)
-            }
-        }
-
-
-        btnThrow = findViewById(R.id.btnThrow)
-        btnThrow.setOnClickListener {
-            // avoid re throwing dice if the user hasn't scored previous scores
-            if(viewModel.userAllowToThrow.value!! && reRollDiceArray.size == 0 ) {
-                viewModel.rollDice()
-                removeWinningScoreEditor()
-            }
-            else if(viewModel.userAllowToReRoll.value!!) {
-                viewModel.reRollDice(reRollDiceArray.toIntArray())
-                updateSelectedDices(imageViewsForUser)
-            }
-        }
-
-        removeWinningScoreEditor()
-
-        btnSetGameWinningScore = findViewById(R.id.btnSetGameWinningScore)
-        btnSetGameWinningScore.setOnClickListener {
-            if(viewModel.allowToChangeWinningScore.value!!) {
-                viewModel.setGameWinningScore(textInputGameWinningScore.text.toString())
-                textInputGameWinningScore.clearFocus()
-            }
-        }
-
-        btnScore = findViewById(R.id.btnScore)
-        btnScore.setOnClickListener {
-            if(viewModel.userAllowToScore.value!!) {
-                viewModel.scoreDiceValue()
-                btnThrowText = getString(R.string.button_throw)
-            }
-            if(viewModel.hasWin.value!!){
-                if(viewModel.winner.value.equals("user")){
-                    winnerPopUpWindow("You win!")
-                }else{
-                    winnerPopUpWindow("You lose")
-                }
-            }
-        }
-
+        // saving the data getting from the intents
         // To subscribe to changes in a ViewModel
         // "it" is the new value when it's published from the viewModel
-        viewModel.robotDiceArray.observe(this, Observer { updateDisplay(it,imageViewsForRobot) })
-        viewModel.userDiceArray.observe(this, Observer { updateDisplay(it,imageViewsForUser) })
+        viewModel.robotDiceArray.observe(this, Observer { updateDices(it,imageViewsForRobot) })
+        viewModel.userDiceArray.observe(this, Observer { updateDices(it,imageViewsForUser) })
         viewModel.userCurrentRollFullScore.observe(this, Observer { textViewUserRollFullScore.text = it })
         viewModel.robotCurrentRollFullScore.observe(this, Observer { textViewRobotRollFullScore.text = it })
         viewModel.userFullScore.observe(this, Observer { textViewUserFullScore.text = it })
         viewModel.robotFullScore.observe(this, Observer { textViewRobotFullScore.text = it })
-        viewModel.gameWinningScore.observe(this, Observer { textInputGameWinningScore.setText(it.toString()) })
         viewModel.finalWinningScore.observe(this, Observer { textViewFinalWinningScore.text = it })
-        viewModel.userRemainingReRolls.observe(this, Observer { userRemainingRolls = it })
-        viewModel.btnThrowText.observe(this, Observer { btnThrow.text = it })
-        viewModel.reRollDiceArray.observe(this, Observer { reRollDiceArray = it })
         viewModel.userWinnings.observe(this, Observer { textViewUserGameWins.text = it.toString() })
         viewModel.robotWinnings.observe(this, Observer { textViewRobotGameWins.text = it.toString() })
-    }
+        viewModel.btnThrowText.observe(this, Observer { btnThrow.text = it })
+        viewModel.userRemainingReRolls.observe(this, Observer { userRemainingReRolls = it })
+        viewModel.reRollDiceArray.observe(this, Observer {reRollDiceArray = it })
+        viewModel.gameDifficulty.observe(this, Observer { gameDifficulty = it })
+        viewModel.btnScoreVisibility.observe(this, Observer { btnScore.visibility = it })
+        viewModel.btnThrowVisibility.observe(this, Observer { btnThrow.visibility = it })
 
+        // get the user selected dices to reRoll
+        val userDice1 = findViewById<ImageView>(R.id.userDice1)
+        updateSelectedDiceBackground(userDice1, 1)
 
-    private fun removeWinningScoreEditor(){
-        if(viewModel.allowToChangeWinningScore.value!!.not()) {
-            textInputGameWinningScore.isEnabled = false
-            linearLayoutEnterTargetScore.visibility = View.GONE
+        val userDice2 = findViewById<ImageView>(R.id.userDice2)
+        updateSelectedDiceBackground(userDice2, 2)
+
+        val userDice3 = findViewById<ImageView>(R.id.userDice3)
+        updateSelectedDiceBackground(userDice3, 3)
+
+        val userDice4 = findViewById<ImageView>(R.id.userDice4)
+        updateSelectedDiceBackground(userDice4, 4)
+
+        val userDice5 = findViewById<ImageView>(R.id.userDice5)
+        updateSelectedDiceBackground(userDice5, 5)
+
+        btnThrow = findViewById(R.id.btnThrow)
+        btnScore = findViewById(R.id.btnScore)
+
+        btnThrow.setOnClickListener {
+            // avoid re throwing dice if the user hasn't scored previous scores
+            if( viewModel.userAllowToThrow.value!!
+                && reRollDiceArray.size == 5
+                && viewModel.isTie.value!!.not() ) {
+                viewModel.throwDices()
+            }
+            else if(viewModel.userAllowToReRoll.value!!) {
+                viewModel.reRollDices(reRollDiceArray.toIntArray())
+                restoreSelectedDices(imageViewsForUser)
+                checkWin()
+            }
+            else if(viewModel.userAllowToThrow.value!!
+                    && reRollDiceArray.size == 5
+                    && viewModel.isTie.value!! ){
+                viewModel.rollDiceWhenTie()
+            }
+        }
+
+        btnScore.setOnClickListener {
+            if(viewModel.userAllowToScore.value!!) {
+                viewModel.scoreDicesValue()
+                restoreSelectedDices(imageViewsForUser)
+                btnThrow.text = getString(R.string.button_throw)
+            }
+            checkWin() // if someone has won this will trigger the winnerPopupWindow
+        }
+
+        // if the below expression returns a null value, set the value of CONFIG_CHANGE to false
+        val configChange = savedInstanceState?.getBoolean(CONFIG_CHANGE) ?: false
+        if(configChange){
+            viewModel.reRollDiceArray.value?.let { updateSelectedDicesBackgrounds(it,imageViewsForUser) }
         }
     }
 
-    private fun winnerPopUpWindow(winnerName: String?) {
-        val inflater : LayoutInflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val popupView : View = inflater.inflate(R.layout.winner_popup_layout, null)
-
-        val width = ViewGroup.LayoutParams.WRAP_CONTENT
-        val height = ViewGroup.LayoutParams.WRAP_CONTENT
-        val focusable = true
-
-        val popupWindow = PopupWindow(popupView, width, height,focusable)
-
-
-        popupWindow.isOutsideTouchable = false
-        popupWindow.isFocusable = true
-        popupWindow.showAtLocation(findViewById<View?>(android.R.id.content).rootView, Gravity.CENTER, 0, 0)
-        val winner = popupView.findViewById<TextView>(R.id.textViewWinner)
-        winner.text = winnerName
-
-        popupWindow.setOnDismissListener {
-            intent = Intent(this, MainActivity::class.java)
-            intent.action = Intent.ACTION_VIEW
-            intent.putExtra("userWins", viewModel.userWinnings.value)
-            intent.putExtra("robotWins", viewModel.robotWinnings.value)
-            startActivity(intent)
+    /**
+     * Check the winner and execute the winnerPopupWindow function
+    */
+    private fun checkWin() {
+        if (viewModel.isWin.value!!) {
+            if (viewModel.winner.value.equals("user")) {
+                winnerPopUpWindow("You win!")
+            } else if (viewModel.winner.value.equals("robot")) {
+                winnerPopUpWindow("You lose")
+            }
         }
     }
 
+    /**
+     * Update each dice when the user selected them to reRoll
+    */
+    private fun updateSelectedDiceBackground(userDice:ImageView, diceNumber:Int){
+        userDice.setOnClickListener{
+            if(viewModel.userAllowToSelectDices.value!!){
+                viewModel.updateReRollDiceArray(userDice, diceNumber, reRollDiceArray)
+            }
+        }
+    }
 
-    private fun updateSelectedDices( imageViews: Array<ImageView>){
+    /**
+     * set for the default values to the reRoll
+    */
+    private fun restoreSelectedDices(imageViews: Array<ImageView>){
         for(i in imageViews.indices){
             imageViews[i].setBackgroundResource(0)
         }
         reRollDiceArray.clear()
+        reRollDiceArray.addAll(listOf(1,2,3,4,5))
     }
 
-    private fun updateDisplay(dice: IntArray, imageViews: Array<ImageView>) {
+    /**
+        updates the dices in the UI
+    */
+    private fun updateDices(dice: IntArray, imageViews: Array<ImageView>) {
         // loop through image view objects and set the images one die at a time
         for (i in imageViews.indices) {
             // each time through the loop, create a variable "drawableId"
@@ -211,6 +198,77 @@ class GameActivity : AppCompatActivity() {
                 else -> R.drawable.die_face_6
             }
             imageViews[i].setImageResource(drawableId)
+        }
+    }
+
+    /**
+     * update the selected dice when the screen rotate
+     */
+    private fun updateSelectedDicesBackgrounds(reRollDiceArray: MutableList<Int>, imageViews: Array<ImageView>){
+        val userSelectedKeepDicesArray = DiceHelper.getUserSelectedDices(reRollDiceArray.toIntArray())
+        for(i in userSelectedKeepDicesArray.indices){
+            if (userSelectedKeepDicesArray[i] == 1) { imageViews[0].setBackgroundResource(R.drawable.image_border) }
+            else if (userSelectedKeepDicesArray[i] == 2) { imageViews[1].setBackgroundResource(R.drawable.image_border) }
+            else if (userSelectedKeepDicesArray[i] == 3) { imageViews[2].setBackgroundResource(R.drawable.image_border) }
+            else if (userSelectedKeepDicesArray[i] == 4) { imageViews[3].setBackgroundResource(R.drawable.image_border) }
+            else if (userSelectedKeepDicesArray[i] == 5) { imageViews[4].setBackgroundResource(R.drawable.image_border) }
+            else {}
+        }
+    }
+
+    /**
+     *  Display the Results and the winner in the popup Window
+     */
+    private fun winnerPopUpWindow(winnerName: String?) {
+        val inflater : LayoutInflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val popupView : View = inflater.inflate(R.layout.winner_popup_layout, null)
+        val popupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
+
+        popupWindow.isOutsideTouchable = false
+        popupWindow.isFocusable = true
+        popupWindow.showAtLocation(findViewById<View?>(android.R.id.content).rootView, Gravity.CENTER, 0, 0)
+
+        val winner = popupView.findViewById<TextView>(R.id.textViewWinner)
+        val imageViewWinnerBannerPopup = popupView.findViewById<ImageView>(R.id.imageViewWinnerBannerPopup)
+        val imageViewWinnerPopup = popupView.findViewById<ImageView>(R.id.imageViewWinnerPopup)
+        winner.text = winnerName
+
+        // change the UI based on the result
+        if(winnerName!!.contains("win")){
+            winner.setTextColor(Color.GREEN)
+            imageViewWinnerBannerPopup.setImageResource(R.drawable.winner_banner)
+            imageViewWinnerPopup.setImageResource(R.drawable.user_winner_image)
+        }else {
+            winner.setTextColor(Color.RED)
+            imageViewWinnerBannerPopup.setImageResource(0)
+            imageViewWinnerPopup.setImageResource(R.drawable.robot_winner_image)
+        }
+
+        // trigger the StartActivity when the user click the back button
+        popupWindow.setOnDismissListener {
+            intent = Intent(this, MainActivity::class.java)
+            intent.action = Intent.ACTION_VIEW
+            intent.putExtra("userWins", viewModel.userWinnings.value)
+            intent.putExtra("robotWins", viewModel.robotWinnings.value)
+            startActivity(intent)
+        }
+    }
+
+    /**
+     * save the InstanceState to update the selected dices when the config change happens
+     */
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean(CONFIG_CHANGE, true)
+        super.onSaveInstanceState(outState)
+    }
+
+    /**
+     * Destroy the opened Popup Window
+     */
+    override fun onDestroy() {
+        super.onDestroy()
+        if (popupWindow != null && popupWindow?.isShowing == true) {
+            popupWindow?.dismiss()
         }
     }
 }

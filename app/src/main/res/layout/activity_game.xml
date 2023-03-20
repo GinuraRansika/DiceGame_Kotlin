@@ -2,20 +2,33 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayoutGamePage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".GameActivity">
 
+    <ImageView
+        android:id="@+id/imageViewGamePageBackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/background_image_for_the_game_page"
+        android:scaleType="centerCrop"
+        android:src="@drawable/easy_game_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="104dp"
+        android:layout_marginTop="56dp"
         android:text="@string/you"
+        android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.222"
+        app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayoutWinningScore" />
 
@@ -24,22 +37,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="104dp"
+        android:layout_marginTop="56dp"
         android:layout_marginEnd="8dp"
         android:text="@string/robot"
+        android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.609"
+        app:layout_constraintHorizontal_bias="0.645"
         app:layout_constraintStart_toEndOf="@+id/textViewUser"
         app:layout_constraintTop_toBottomOf="@+id/linearLayoutWinningScore" />
 
     <LinearLayout
         android:id="@+id/linearLayoutFullScore"
-        android:layout_width="117dp"
-        android:layout_height="91dp"
+        android:layout_width="124dp"
+        android:layout_height="115dp"
         android:layout_marginTop="16dp"
+        android:background="@drawable/full_score_border"
         android:gravity="center"
         android:orientation="vertical"
+        android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,11 +66,12 @@
             android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/full_score" />
+            android:text="@string/full_score"
+            android:textColor="@color/white" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="28dp"
+            android:layout_height="39dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -67,7 +84,8 @@
                     android:id="@+id/textViewUserFullScoreLabel"
                     android:layout_width="43dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/you" />
+                    android:text="@string/you"
+                    android:textColor="@color/white" />
             </LinearLayout>
 
             <LinearLayout
@@ -80,7 +98,8 @@
                     android:id="@+id/textViewUserFullScore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="" />
+                    android:text=""
+                    android:textColor="@color/white" />
             </LinearLayout>
         </LinearLayout>
 
@@ -98,9 +117,10 @@
 
                 <TextView
                     android:id="@+id/textViewRobotFullScoreLabel"
-                    android:layout_width="43dp"
-                    android:layout_height="20dp"
-                    android:text="@string/robot" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/robot"
+                    android:textColor="@color/white" />
             </LinearLayout>
 
             <LinearLayout
@@ -113,92 +133,78 @@
                     android:id="@+id/textViewRobotFullScore"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="" />
+                    android:text=""
+                    android:textColor="@color/white" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayoutGameWins"
-        android:layout_width="117dp"
-        android:layout_height="91dp"
+        android:layout_width="112dp"
+        android:layout_height="82dp"
         android:layout_marginTop="16dp"
+        android:background="@drawable/total_wins_border"
         android:gravity="center"
         android:orientation="vertical"
+        android:padding="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/textViewGameWinLabel"
-            android:layout_width="90dp"
+            android:layout_width="107dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/total_wins" />
+            android:text="@string/total_wins"
+            android:textAlignment="center"
+            android:textColor="@color/white" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="28dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="64dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:orientation="horizontal">
-
                 <TextView
                     android:id="@+id/textViewUserGameWinLabel"
-                    android:layout_width="43dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/you" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="horizontal">
-
+                    android:padding="2dp"
+                    android:text="@string/human_wins_label"
+                    android:textColor="@color/white" />
                 <TextView
                     android:id="@+id/textViewUserGameWins"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="" />
+                    android:layout_height="match_parent"
+                    android:padding="2dp"
+                    android:text=""
+                    android:textColor="@color/white" />
             </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="65dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:orientation="horizontal">
-
                 <TextView
                     android:id="@+id/textViewRobotGameWinLabel"
-                    android:layout_width="43dp"
-                    android:layout_height="20dp"
-                    android:text="@string/robot" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="horizontal">
-
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="2dp"
+                    android:text="@string/computer_wins_label"
+                    android:textColor="@color/white" />
                 <TextView
                     android:id="@+id/textViewRobotGameWins"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="" />
+                    android:padding="2dp"
+                    android:text=""
+                    android:textColor="@color/white" />
             </LinearLayout>
         </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -206,6 +212,7 @@
         android:layout_width="360dp"
         android:layout_height="37dp"
         android:layout_marginTop="4dp"
+        android:background="@color/black"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -215,63 +222,37 @@
 
         <TextView
             android:id="@+id/textViewYourScoreLabel"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/roll_score" />
+            android:layout_marginEnd="10dp"
+            android:text="@string/roll_score"
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/textViewUserScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="60dp"
-            android:text="" />
+            android:layout_marginEnd="100dp"
+            android:text=""
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/textViewRobotScoreLabel"
-            android:layout_width="90dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/roll_score" />
+            android:layout_marginEnd="10dp"
+            android:text="@string/roll_score"
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/textViewRobotScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="" />
+            android:text=""
+            android:textColor="@color/white" />
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayoutEnterTargetScore"
-        android:layout_width="270dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutRollScore">
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="170dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="30dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputGameWinningScore"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/enter_target_score"
-                android:inputType="number|numberDecimal" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Button
-            android:id="@+id/btnSetGameWinningScore"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/set" />
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayoutThrowAndScoreButton"
@@ -285,16 +266,17 @@
 
         <Button
             android:id="@+id/btnThrow"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
+            android:layout_marginHorizontal="5dp"
             android:layout_weight="1"
             android:text="@string/button_throw" />
 
         <Button
             android:id="@+id/btnScore"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
             android:layout_weight="1"
             android:text="@string/button_score" />
 
@@ -323,7 +305,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="82dp"
+                android:layout_width="78dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
@@ -332,7 +314,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dice_height"
                     android:layout_marginBottom="5dp"
-                    android:contentDescription="user Dice 1"
+                    android:contentDescription="@string/user_dice_1"
                     android:paddingTop="3dp"
                     android:src="@drawable/die_face_6" />
 
@@ -341,6 +323,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dice_height"
                     android:layout_marginBottom="5dp"
+                    android:contentDescription="@string/user_dice_2"
                     android:paddingTop="3dp"
                     android:src="@drawable/die_face_6" />
 
@@ -349,12 +332,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dice_height"
                     android:layout_marginBottom="5dp"
+                    android:contentDescription="@string/user_dice_3"
                     android:paddingTop="3dp"
                     android:src="@drawable/die_face_6" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="82dp"
+                android:layout_width="78dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
@@ -363,15 +347,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dice_height"
                     android:layout_marginBottom="5dp"
+                    android:contentDescription="@string/user_dice_4"
                     android:paddingTop="3dp"
                     android:src="@drawable/die_face_6" />
 
                 <ImageView
                     android:id="@+id/userDice5"
-
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dice_height"
                     android:layout_marginBottom="5dp"
+                    android:contentDescription="@string/user_dice_5"
                     android:paddingTop="3dp"
                     android:src="@drawable/die_face_6" />
             </LinearLayout>
@@ -384,7 +369,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="82dp"
+                android:layout_width="78dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
@@ -393,6 +378,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dice_height"
                     android:layout_marginBottom="5dp"
+                    android:contentDescription="@string/computer_dice_1"
                     android:paddingTop="3dp"
                     android:src="@drawable/die_face_6" />
 
@@ -401,6 +387,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dice_height"
                     android:layout_marginBottom="5dp"
+                    android:contentDescription="@string/computer_dice_2"
                     android:paddingTop="3dp"
                     android:src="@drawable/die_face_6" />
 
@@ -409,12 +396,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dice_height"
                     android:layout_marginBottom="5dp"
+                    android:contentDescription="@string/computer_dice_3"
                     android:paddingTop="3dp"
                     android:src="@drawable/die_face_6" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="82dp"
+                android:layout_width="78dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
@@ -423,6 +411,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dice_height"
                     android:layout_marginBottom="5dp"
+                    android:contentDescription="@string/computer_dice_4"
                     android:paddingTop="3dp"
                     android:src="@drawable/die_face_6" />
 
@@ -431,6 +420,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dice_height"
                     android:layout_marginBottom="5dp"
+                    android:contentDescription="@string/computer_dice_5"
                     android:paddingTop="3dp"
                     android:src="@drawable/die_face_6" />
             </LinearLayout>
@@ -439,10 +429,11 @@
 
     <LinearLayout
         android:id="@+id/linearLayoutWinningScore"
-        android:layout_width="126dp"
-        android:layout_height="21dp"
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -450,16 +441,22 @@
 
         <TextView
             android:id="@+id/textViewFinalWinningScoreLabel"
-            android:layout_width="95dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/winning_score" />
+            android:text="@string/winning_score"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/textViewFinalWinningScore"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="" />
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="30sp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

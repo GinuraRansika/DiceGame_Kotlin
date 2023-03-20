@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/game_setting_popup_screen_layout"
+    android:layout_width="match_parent"
+
+
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="368dp"
+        android:layout_height="554dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/rounded_black_popup_border"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="30dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textViewGameSettingLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:text="@string/game_settings"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="25sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="226dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageViewEasyMode"
+                android:layout_width="125dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:contentDescription="@string/choose_easy_game_mode_option"
+                android:scaleType="centerCrop"
+                android:src="@drawable/easy_game_mode_clicked" />
+
+            <ImageView
+                android:id="@+id/imageViewHardMode"
+                android:layout_width="119dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="@string/choose_hard_game_mode_option"
+                android:scaleType="centerCrop"
+                android:src="@drawable/hard_game_mode" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="59dp"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="11dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/easy_mode"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="10dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:background="@color/black"
+                android:gravity="center"
+                android:text="@string/hard_mode"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linearLayoutEnterTargetScore"
+            android:layout_width="313dp"
+            android:layout_height="72dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:textAlignment="center">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="181dp"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputGameWinningScore"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/enter_target_score"
+                    android:inputType="number|numberDecimal" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnConfirmedSettings"
+            android:layout_width="280dp"
+            android:layout_height="60dp"
+            android:text="@string/start" />
+
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
