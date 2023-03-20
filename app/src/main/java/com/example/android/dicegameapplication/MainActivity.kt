@@ -11,6 +11,9 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 
+/**
+ * Demo Video Link : https://drive.google.com/file/d/1Bo9jeJSVekoUpjvCPrXfQK1lpbSZgKvJ/view?usp=sharing
+ */
 class MainActivity : AppCompatActivity() {
     private lateinit var btnNewGame: Button
     private lateinit var btnAbout: Button

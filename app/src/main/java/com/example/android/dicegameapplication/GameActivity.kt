@@ -222,11 +222,11 @@ class GameActivity : AppCompatActivity() {
     private fun winnerPopUpWindow(winnerName: String?) {
         val inflater : LayoutInflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val popupView : View = inflater.inflate(R.layout.winner_popup_layout, null)
-        val popupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
 
-        popupWindow.isOutsideTouchable = false
-        popupWindow.isFocusable = true
-        popupWindow.showAtLocation(findViewById<View?>(android.R.id.content).rootView, Gravity.CENTER, 0, 0)
+        popupWindow = PopupWindow(popupView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
+        popupWindow!!.isOutsideTouchable = false
+        popupWindow!!.isFocusable = true
+        popupWindow!!.showAtLocation(findViewById<View?>(android.R.id.content).rootView, Gravity.CENTER, 0, 0)
 
         val winner = popupView.findViewById<TextView>(R.id.textViewWinner)
         val imageViewWinnerBannerPopup = popupView.findViewById<ImageView>(R.id.imageViewWinnerBannerPopup)
@@ -245,7 +245,7 @@ class GameActivity : AppCompatActivity() {
         }
 
         // trigger the StartActivity when the user click the back button
-        popupWindow.setOnDismissListener {
+        popupWindow!!.setOnDismissListener {
             intent = Intent(this, MainActivity::class.java)
             intent.action = Intent.ACTION_VIEW
             intent.putExtra("userWins", viewModel.userWinnings.value)
@@ -268,7 +268,7 @@ class GameActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         if (popupWindow != null && popupWindow?.isShowing == true) {
-            popupWindow?.dismiss()
+            popupWindow!!.dismiss()
         }
     }
 }
